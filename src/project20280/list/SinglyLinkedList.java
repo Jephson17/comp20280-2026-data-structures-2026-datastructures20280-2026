@@ -23,6 +23,8 @@ public class SinglyLinkedList<E> implements List<E> {
          */
         public Node(E e, Node<E> n) {
             // TODO
+            element = e;
+            next = n;
         }
 
         // Accessor methods
@@ -33,7 +35,7 @@ public class SinglyLinkedList<E> implements List<E> {
          * @return the element stored at the node
          */
         public E getElement() {
-            return null;
+            return element;
         }
 
         /**
@@ -43,7 +45,13 @@ public class SinglyLinkedList<E> implements List<E> {
          */
         public Node<E> getNext() {
             // TODO
-            return null;
+            if (next == null) {
+                return null;
+            }
+            else {
+                return next;
+            }
+
         }
 
         // Modifier methods
@@ -55,6 +63,7 @@ public class SinglyLinkedList<E> implements List<E> {
          */
         public void setNext(Node<E> n) {
             // TODO
+            next = n;
         }
     } //----------- end of nested Node class -----------
 
@@ -75,53 +84,142 @@ public class SinglyLinkedList<E> implements List<E> {
     //@Override
     public int size() {
         // TODO
-        return 0;
+        return size;
     }
 
     //@Override
     public boolean isEmpty() {
         // TODO
+        if (head == null) {
+            return true;
+        }
         return false;
     }
 
     @Override
     public E get(int position) {
         // TODO
+        Node<E> current = head;
+        int count = 0;
+
+        while (current != null) {
+
+            if (count == position) {
+                return current.getElement();
+            }
+
+            current = current.getNext();
+            count++;
+        }
+
         return null;
     }
 
     @Override
     public void add(int position, E e) {
         // TODO
+        Node<E> current = head; // starts at the head
+        // current is a pointer that only know how to point to Nodes
+        Node<E> nodeToStoreItem =  new Node<>(e, null);
+        for (int i = 0; i <= position; i++) {
+            current = current.getNext();
+
+            if (i == position) {
+                nodeToStoreItem.setNext(current); // setNext is the function that
+                // tells a Node to point to the next Node
+
+            }
+
+        }
+
     }
 
 
     @Override
     public void addFirst(E e) {
         // TODO
+        Node<E> firstNode = new Node<>(e, null);
+        firstNode.setNext(head);
+        head = firstNode;
+        size++;
     }
 
     @Override
     public void addLast(E e) {
         // TODO
+        if (head == null) {
+            Node<E> firstNode = new Node<E> (e, null);
+            head = firstNode;
+            size++;
+
+        }
+
+        else{
+            Node<E> currentNode = head;
+
+            while(currentNode.getNext() != null) {
+
+                currentNode = currentNode.getNext();
+                // The current node keeps going until get next is null,
+                // which means I arrived at the last Node, so current is
+                // at the last Node, THEN I can update the ex last node
+                // to be the second last
+            }
+
+            Node<E> lastNode = new  Node<>(e, null);
+            currentNode.setNext(lastNode);
+
+            size++;
+
+        }
+
     }
 
     @Override
     public E remove(int position) {
         // TODO
-        return null;
+        Node<E>  current = head;
+        E removedElement = null;
+
+        for  (int i = 0; i < position - 1; i++) {
+            current = current.getNext();
+            removedElement = current.getElement();
+        }
+
+        current.setNext(current.getNext().getNext());
+
+        size--;
+
+        return removedElement;
     }
 
     @Override
     public E removeFirst() {
         // TODO
-        return null;
+        E removedFirstElement = null;
+        removedFirstElement = head.getElement();
+        head = head.getNext();
+        return removedFirstElement;
     }
 
     @Override
     public E removeLast() {
         // TODO
-        return null;
+
+        Node<E>  current = head;
+        E removedLastElement = null;
+
+        for (int  i = 0; i <= size - 2; i++) {
+
+            current = current.getNext();
+        }
+        removedLastElement = current.getNext().getElement(); // THAT is the last
+        // item in the last Node
+
+        current.setNext(null); // the second last element
+
+        size--;
+        return removedLastElement;
     }
 
     //@Override
